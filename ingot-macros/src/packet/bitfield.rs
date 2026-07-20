@@ -29,12 +29,12 @@ impl PrimitiveInBitfield {
     fn last_byte_exclusive(&self) -> usize {
         let last_bit_inner = self.first_bit_inner + self.n_bits;
         let whole_bytes = last_bit_inner / 8;
-        whole_bytes + if last_bit_inner % 8 != 0 { 1 } else { 0 }
+        whole_bytes + !last_bit_inner.is_multiple_of(8) as usize
     }
 
     fn byteslice_len(&self) -> usize {
         let whole_bytes = self.n_bits / 8;
-        whole_bytes + if self.n_bits % 8 != 0 { 1 } else { 0 }
+        whole_bytes + !self.n_bits.is_multiple_of(8) as usize
     }
 
     fn get_set_body(&self, field: &ValidField, op: FieldOp) -> TokenStream {
@@ -226,8 +226,7 @@ impl PrimitiveInBitfield {
                 });
             }
             (false, false, FieldOp::Set) => {
-                let n_repr_bytes =
-                    (self.n_bits / 8) + ((self.n_bits % 8) != 0) as usize;
+                let n_repr_bytes = self.byteslice_len();
                 let last_el = last_byte_ex - first_byte - 1;
 
                 if last_el == 0 {
@@ -323,10 +322,10 @@ impl PrimitiveInBitfield {
     }
 
     fn byte_aligned_at_end(&self) -> bool {
-        (self.first_bit_inner + self.n_bits) % 8 == 0
+        (self.first_bit_inner + self.n_bits).is_multiple_of(8)
     }
 
     fn byte_aligned_at_start(&self) -> bool {
-        self.first_bit_inner % 8 == 0
+        self.first_bit_inner.is_multiple_of(8)
     }
 }

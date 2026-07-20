@@ -814,7 +814,7 @@ impl StructParseDeriveCtx {
                 endianness: analysis.get_primitive_endianness(),
             });
 
-            if curr_bitfield_state.bits_seen % 8 == 0 {
+            if curr_bitfield_state.bits_seen.is_multiple_of(8) {
                 bitfield_count += 1;
                 bitfield_state = None;
             }

@@ -11,7 +11,7 @@ members = [
 edition = "2021"
 license = "MPL-2.0"
 repository = "https://github.com/oxidecomputer/ingot"
-rust-version = "1.81"
+rust-version = "1.97.1"
 keywords = ["raw", "packet", "networking", "parser"]
 categories = ["network-programming", "no-std", "parsing"]
 
@@ -23,8 +23,8 @@ ingot-types = { version = "=0.1.2", path = "ingot-types", default-features = fal
 
 # External
 bitflags = "2"
-darling = "0.21"
-itertools = "0.14"
+darling = "0.23"
+itertools = "0.15"
 macaddr = { version = "1", default-features = false }
 proc-macro2 = { version = "1" }
 quote = "1.0"
